@@ -45,10 +45,29 @@ function initDiagram() {
             linkKeyProperty: 'key'  
           })
       });
-  
+  function tooltipTextConverter(nodes) {
+    console.log("nodes",nodes)
+    var str = "show details here";
+    // str += "Born: " + person.birthYear;
+    // if (person.deathYear !== undefined) str += "\nDied: " + person.deathYear;
+    // if (person.reign !== undefined) str += "\nReign: " + person.reign;
+    return str;
+  }
+
+  var tooltiptemplate =
+      $("ToolTip",
+        { "Border.fill": "whitesmoke", "Border.stroke": "black" },
+        $(go.TextBlock,
+          {
+            font: "bold 8pt Helvetica, bold Arial, sans-serif",
+            wrap: go.TextBlock.WrapFit,
+            margin: 5
+          },
+          new go.Binding("text", "", tooltipTextConverter))
+      );
   diagram.nodeTemplate =
     $(go.Node, "Vertical",
-      { locationObjectName: "ICON", locationSpot: go.Spot.Center },
+      { locationObjectName: "ICON", locationSpot: go.Spot.Center,toolTip: tooltiptemplate },
       new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
       $(go.Panel, "Spot",
         $(go.Panel, "Auto",
